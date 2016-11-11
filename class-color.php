@@ -378,5 +378,3 @@ if (!class_exists("Color"))
 
 	} // end class Color
 } // end if class exists Color
-
-?>

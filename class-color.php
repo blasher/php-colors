@@ -55,15 +55,15 @@ if (!class_exists("Color"))
 		function __construct($args)
 		{	$this->args = $args;
 
-		  switch( (string) $args['type'] )
+			switch( (string) $args['type'] )
 			{
-				case 'RGBString':
+				case 'RGBHexString':
 					$this->rgbhex   = $args['value'];
 					$this->hue      = $this->hue();
 					$this->sat      = $this->sat();
 					$this->lum      = $this->lum();
 					break;
-				case 'RGBArray':
+				case 'RGBHexArray':
 					$this->rgbarray = $args['value'];
 					$this->rgbhex   = $this->rgbarray[0].$this->rgbarray[1].$this->rgbarray[2];
 					$this->hue      = $this->hue();
@@ -78,7 +78,7 @@ if (!class_exists("Color"))
 					$this->rgbhex   = $this->hsl_2_rgb();
 					break;
 				default:				
-					die('Valid Initial Color Types supported at this time: RGBString, RGBArray, HSLArray');
+					die('Valid Initial Color Types supported at this time: RGBHexString, RGBHexArray, HSLArray');
 			}
 		}
 

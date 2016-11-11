@@ -2,7 +2,6 @@
 /***************************************************************************
  *                                                                         *
  *   class-color.php                                                       *
- *   V1.0.000                                                              *
  *                                                                         *
  *   Copyright (C) 2011 by Brian Lasher                                    *
  *   me@brianlasher.com                                                    *

@@ -47,9 +47,9 @@ if (!class_exists('Color'))
 		public $var_max    = '';
 		public $max_delta  = '';
 
-		public $hue        = '';        // 0-360 degrees
-		public $sat        = '';        // 0-100%
-		public $lum        = '';        // 0-100%
+		public $hue        = '';        // normalized value 0.00 - 1.00 (represents 0' - 360')
+		public $sat        = '';        // 0-1 (represents 0-100%)
+		public $lum        = '';        // 0-1 (represents 0-100%)
 
 		public $hsl        = array();   // array( hue, sat, lum )
 

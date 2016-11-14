@@ -22,129 +22,130 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-if (!class_exists("Color"))
-{	class Color
+if (!class_exists('Color'))
+{
+	class Color
 	{
-		public $init_type  = '';
-		public $init_value = '';
+		public $red        = '';        // dec value 0-255
+		public $blue       = '';        // dec value 0-255
+		public $green      = '';        // dec value 0-255
 
-		public $rgbhex     = '';
+		public $rgb        = array();   // array( red, blue, green )
 
-		public $redhex     = '';
-		public $bluehex    = '';
-		public $greenhex   = '';
+		public $redhex     = '';        // hex value 00-ff
+		public $bluehex    = '';        // hex value 00-ff
+		public $greenhex   = '';        // hex value 00-ff
 
-		public $redval     = '';
-		public $blueval    = '';
-		public $greenval   = '';
+		public $rgbhex     = array();   // array( redhex, bluehex, greenhex )
+		public $rgbhexstr  = '';
+
+		public $redval     = '';        // normalized value 0.00 - 1.00
+		public $blueval    = '';        // normalized value 0.00 - 1.00
+		public $greenval   = '';        // normalized value 0.00 - 1.00
 
 		public $var_min    = '';
 		public $var_max    = '';
 		public $max_delta  = '';
 
-		public $hue        = '';
-		public $sat        = '';
-		public $lum        = '';
+		public $hue        = '';        // 0-360 degrees
+		public $sat        = '';        // 0-100%
+		public $lum        = '';        // 0-100%
 
-		// PHP 4 Compatible Constructor
-		function Color($args)
-		{	$this->__construct($args);
-		}
+		public $hsl        = array();   // array( hue, sat, lum )
 
 		// PHP 5 Constructor
-		function __construct($args)
-		{	$this->args = $args;
+		function __construct( $r, $g, $b )
+		{	
+			$this->red   = $r;
+			$this->green = $g;
+			$this->blue  = $b;
 
-			switch( (string) $args['type'] )
-			{
-				case 'RGBHexString':
-					$this->rgbhex   = $args['value'];
-					$this->hue      = $this->hue();
-					$this->sat      = $this->sat();
-					$this->lum      = $this->lum();
-					break;
-				case 'RGBHexArray':
-					$this->rgbarray = $args['value'];
-					$this->rgbhex   = $this->rgbarray[0].$this->rgbarray[1].$this->rgbarray[2];
-					$this->hue      = $this->hue();
-					$this->sat      = $this->sat();
-					$this->lum      = $this->lum();
-					break;
-				case 'HSLArray':
-					$this->hslarray = $args['value'];
-					$this->hue      = $this->hsl_modulus( $this->hslarray[0] );
-					$this->sat      = $this->hsl_modulus( $this->hslarray[1] );
-					$this->lum      = $this->hsl_modulus( $this->hslarray[2] );
-					$this->rgbhex   = $this->hsl_2_rgb();
-					break;
-				default:				
-					die('Valid Initial Color Types supported at this time: RGBHexString, RGBHexArray, HSLArray');
-			}
+			$this->hue   = $this->hue();
+			$this->sat   = $this->sat();
+			$this->lum   = $this->lum();
+
+			$this->hsl   = $this->hsl();
+
 		}
 
-		function hsl_modulus($arg)
-		{	$tmp = $arg;
+		///////////////////////////////////////////////
+		// RGB FUNCTIONS
+		///////////////////////////////////////////////
 
-			if ($tmp < 0)	{ $tmp += 1;	};
-			if ($tmp > 1)	{ $tmp -= 1;	};
-
-			if ($tmp != 1)
-			{  $tmp = ( ( ($tmp * 1000) % 1000) / 1000 );
-			}
-			return $tmp;
+		function red()
+		{
+			return $this->red;
 		}
 
-		function rgbhex()
-		{	if(!$this->rgbhex)
-			{
-			}
-			return $this->rgbhex;
+		function green()
+		{
+			return $this->green;
+		}
+
+		function blue()
+		{
+			return $this->blue;
+		}
+
+		function rgb()
+		{
+			return array( $this->red, $this->green, $this->blue );
 		}
 
 		function redhex()
 		{	if(!$this->redhex)
-			{	$rgbhex         = $this->rgbhex;
-				$this->redhex   = substr($rgbhex,0,2);
+			{	$this->redhex = dechex( $this->red );
 			}
 			return $this->redhex;
 		}
 
 		function greenhex()
 		{	if(!$this->greenhex)
-			{	$rgbhex         = $this->rgbhex;
-				$this->greenhex = substr($rgbhex,2,2);
+			{	$this->greenhex = dechex( $this->green );
 			}
 			return $this->greenhex;
 		}
 
 		function bluehex()
 		{	if(!$this->bluehex)
-			{	$rgbhex         = $this->rgbhex;
-				$this->bluehex  = substr($rgbhex,4,2);
+			{	$this->bluehex = dechex( $this->blue );
 			}
 			return $this->bluehex;
 		}
 
+		function rgbhex()
+		{	if(!$this->rgbhex)
+			{
+				$this->rgbhex = array( $this->redhex(), $this->greenhex(), $this->bluehex() );
+			}
+			return $this->rgbhex;
+		}
+
+		function rgbhexstr()
+		{	if(!$this->rgbhexstr)
+			{
+				$this->rgbhexstr = $this->redhex(). $this->greenhex(). $this->bluehex();
+			}
+			return $this->rgbhexstr;
+		}
+
 		function redval()
 		{	if(!$this->redval)
-			 {	$redhex        = $this->redhex();
-				$this->redval  = ( hexdec($redhex) ) / 255;
+			{	$this->redval = $this->red / 255;
 			}
 			return $this->redval;
 		}
 
 		function greenval()
 		{	if(!$this->greenval)
-			{	$greenhex        = $this->greenhex();
-				$this->greenval  = ( hexdec($greenhex) ) / 255;
+			{	$this->greenval  = $this->green / 255;
 			}
 			return $this->greenval;
 		}
 
 		function blueval()
 		{	if(!$this->blueval)
-			{	$bluehex        = $this->bluehex();
-				$this->blueval  = ( hexdec($bluehex) ) / 255;
+			{	$this->blueval  = $this->blue / 255;
 			}
 			return $this->blueval;
 		}
@@ -178,37 +179,55 @@ if (!class_exists("Color"))
 			return $this->max_delta;
 		}
 
+		///////////////////////////////////////////////
+		// HSL FUNCTIONS
+		///////////////////////////////////////////////
+
+		function hsl_modulus($arg)
+		{	$tmp = $arg;
+
+			if ($tmp < 0)	{ $tmp += 1;	};
+			if ($tmp > 1)	{ $tmp -= 1;	};
+
+			if ($tmp != 1)
+			{  $tmp = ( ( ($tmp * 1000) % 1000) / 1000 );
+			}
+			return $tmp;
+		}
+
 		function hue()
 		{	if(!$this->hue)
-			{	$var_max    = $this->var_max();
-				$var_min    = $this->var_min();
-				$max_delta  = $this->max_delta();
-				$lum        = $this->lum();
-				$redval     = $this->redval();
+			{	$redval     = $this->redval();
 				$greenval   = $this->greenval();
 				$blueval    = $this->blueval();
 
-				if ($max_delta == 0)
+				$var_max    = $this->var_max();
+				$var_min    = $this->var_min();
+				$max_delta  = $this->max_delta();
+
+				$lum        = $this->lum();
+
+				if ($max_delta === 0)
 				{
 					$h = 0;
 				}
 				else
 				{
-					$del_r = ((($var_max - $redval  ) / 6) + ($max_delta / 2)) / $max_delta;
-					$del_g = ((($var_max - $greenval) / 6) + ($max_delta / 2)) / $max_delta;
-					$del_b = ((($var_max - $blueval ) / 6) + ($max_delta / 2)) / $max_delta;
+					$delta_r = ((($var_max - $redval  ) / 6) + ($max_delta / 2)) / $max_delta;
+					$delta_g = ((($var_max - $greenval) / 6) + ($max_delta / 2)) / $max_delta;
+					$delta_b = ((($var_max - $blueval ) / 6) + ($max_delta / 2)) / $max_delta;
 				
 					if ($redval == $var_max)
 					{
-					        $h = $del_b - $del_g;
+					        $h = $delta_b - $delta_g;
 					}
 					elseif ($greenval == $var_max)
 					{
-					        $h = (1 / 3) + $del_r - $del_b;
+					        $h = (1 / 3) + $delta_r - $delta_b;
 					}
 					elseif ($blueval == $var_max)
 					{
-					        $h = (2 / 3) + $del_g - $del_r;
+					        $h = (2 / 3) + $delta_g - $delta_r;
 					};
 				
 					if ($h < 0)	{ $h += 1;	};
@@ -262,68 +281,14 @@ if (!class_exists("Color"))
 			return $this->lum;
 		}
 
-		function hsl_2_rgb()
+		function hsl()
 		{
-			$h = $this->hue();
-			$s = $this->sat();
-			$l = $this->lum();
-
-			if ($s == 0)
-			{
-				$r = $l * 255;
-				$g = $l * 255;
-				$b = $l * 255;
-			}
-			else
-			{
-				if ($l < 0.5)
-				{
-					$var_2 = $l * (1 + $s);
-				}
-				else
-				{
-					$var_2 = ($l + $s) - ($s * $l);
-				};
-				
-				$var_1 = 2 * $l - $var_2;
-				$r = 255 * $this->hue_2_rgb($var_1,$var_2,$h + (1 / 3));
-				$g = 255 * $this->hue_2_rgb($var_1,$var_2,$h);
-				$b = 255 * $this->hue_2_rgb($var_1,$var_2,$h - (1 / 3));
-			};
-
-			// And after that routine, we finally have $r, $g and $b in 255 255 255 (RGB) format, which we can convert to six digits of hex:
-
-			$rhex = sprintf("%02X",round($r));
-			$ghex = sprintf("%02X",round($g));
-			$bhex = sprintf("%02X",round($b));
-
-			return(  $rhex.$ghex.$bhex );
+			return array( $this->hue, $this->sat, $this->lum );
 		}
 
-		// Function to convert hue to RGB, called from above
-
-		function hue_2_rgb($v1,$v2,$vh)
-		{
-			if ($vh < 0) {	$vh += 1; }
-			if ($vh > 1) {	$vh -= 1; }
-			
-			if ((6 * $vh) < 1)
-			{
-				return ($v1 + ($v2 - $v1) * 6 * $vh);
-			}
-			
-			if ((2 * $vh) < 1)
-			{
-				return ($v2);
-			}
-			
-			if ((3 * $vh) < 2)
-			{
-				return ($v1 + ($v2 - $v1) * ((2 / 3 - $vh) * 6));
-			}
-			
-			return ($v1);
-		}
+		///////////////////////////////////////////////
+		// CHROMATIC FUNCTIONS
+		///////////////////////////////////////////////
 
 		function complement()
 		{	$hue = $this->hue();
@@ -331,10 +296,14 @@ if (!class_exists("Color"))
 			$lum = $this->lum();
 
 			$comp_hue = $hue + .5;
-			$complement = new Color( array( 'type' => 'HSLArray',  'value' => array($comp_hue, $sat, $lum) ) );
+			$complement = new Color( array( 'type' => 'HSL',  'value' => array($comp_hue, $sat, $lum) ) );
 
 			return( $complement );
 		}
+
+		///////////////////////////////////////////////
+		// UTILITY FUNCTIONS
+		///////////////////////////////////////////////
 
 		function sample()
 		{	if( $this->lum < 0.33)  { $text = '#ffffff'; }
@@ -346,6 +315,12 @@ if (!class_exists("Color"))
 		}
 
 		function dump()
+		{
+			print_r($this);
+			print "\n\n\n";
+		}
+
+		function dump2()
 		{
 			$return = '';
 			$return .= ( '<div class="color dump" style="clear:both">' . "\n" );
@@ -369,12 +344,10 @@ if (!class_exists("Color"))
 			$return .= ( 'lum         '.  sprintf("%1\$.3f", $this->lum() ) . "\n" );
 			$return .= ( '</pre>' . "\n" );
 			$return .= ( '</div>' . "\n" );
+			$return .= "\n\n";
 
 			return( $return );
 		}
-
-
-
 
 	} // end class Color
 } // end if class exists Color

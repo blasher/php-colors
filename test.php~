@@ -28,7 +28,7 @@ echo 'COLOR 4' ."\n";
 echo '===================================' . "\n";
 $color4->dump();
 
-$color5 = new RGBHexStringColor( '#0251ee' );
+$color5 = new RGBHexStringColor( '#0251eeRG' );
 echo 'COLOR 5' ."\n";
 echo '===================================' . "\n";
 $color5->dump();

@@ -51,6 +51,9 @@ if (!class_exists('Color'))
 		public $sat        = '';        // 0-1 (represents 0-100%)
 		public $lum        = '';        // 0-1 (represents 0-100%)
 
+		public $hsl_var_1  = '';
+		public $hsl_var_2  = '';
+
 		public $hsl        = array();   // array( hue, sat, lum )
 
 		// PHP 5 Constructor

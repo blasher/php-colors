@@ -4,6 +4,7 @@ require_once( dirname(__FILE__) . '/class-color.php' );
 require_once( dirname(__FILE__) . '/class-color-rgb.php' );
 require_once( dirname(__FILE__) . '/class-color-rgbhex.php' );
 require_once( dirname(__FILE__) . '/class-color-rgbhexstring.php' );
+require_once( dirname(__FILE__) . '/class-color-hsl.php' );
 
 $color1 = new Color( 255, 63, 63 );
 echo 'COLOR 1' ."\n";
@@ -27,7 +28,12 @@ echo 'COLOR 4' ."\n";
 echo '===================================' . "\n";
 $color4->dump();
 
-$color5 = new RGBHexStringColor( '#0251ee' );
+$color5 = new RGBHexStringColor( '#0251eeRG' );
+echo 'COLOR 5' ."\n";
+echo '===================================' . "\n";
+$color5->dump();
+
+$color5 = new HSLColor( 0.33, 1.0, 0.66 );
 echo 'COLOR 5' ."\n";
 echo '===================================' . "\n";
 $color5->dump();

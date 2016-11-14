@@ -30,11 +30,15 @@ if (!class_exists("RGBHexColor"))
 		// PHP 5 Constructor
 		function __construct($hex_r, $hex_g, $hex_b)
 		{	
+			$this->redhex   = $hex_r;
+			$this->greenhex = $hex_g;
+			$this->bluehex  = $hex_b;
+
 			$r = hexdec($hex_r);
 			$g = hexdec($hex_g);
 			$b = hexdec($hex_b);
 
-			parent::__construct( $r, $b, $g );
+			parent::__construct( $r, $g, $b );
 		}
 	}
 }

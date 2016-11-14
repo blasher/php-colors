@@ -21,3 +21,13 @@ $color3 = new RGBHexColor( '80', '40', 'ff' );
 echo 'COLOR 3' ."\n";
 echo '===================================' . "\n";
 $color3->dump();
+
+$color4 = new RGBHexStringColor( '3792f3' );
+echo 'COLOR 4' ."\n";
+echo '===================================' . "\n";
+$color4->dump();
+
+$color5 = new RGBHexStringColor( '#0251ee' );
+echo 'COLOR 5' ."\n";
+echo '===================================' . "\n";
+$color5->dump();

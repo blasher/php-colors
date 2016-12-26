@@ -1,1 +1,8 @@
+title: PHP-Colors
+description: This is an object-oriented color library for PHP". 
+google_analytics: 
+show_downloads: true
 theme: jekyll-theme-slate
+
+gems:
+  - jekyll-mentions
